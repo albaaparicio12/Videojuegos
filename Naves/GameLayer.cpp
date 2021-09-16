@@ -58,6 +58,10 @@ void GameLayer::processControls() {
 }
 
 void GameLayer::keysToControls(SDL_Event event) {
+	if (event.type == SDL_QUIT) {
+		game->loopActive = false;
+		return;
+	}
 	if (event.type == SDL_KEYDOWN) {
 		int code = event.key.keysym.sym;
 		// Pulsada
@@ -127,6 +131,44 @@ void GameLayer::update() {
 			return; // Cortar el for
 		}
 	}
+
+	// Colisiones , Enemy - Projectile
+
+	list<Enemy*> deleteEnemies;
+	list<Projectile*> deleteProjectiles;
+
+	for (auto const& enemy : enemies) {
+		for (auto const& projectile : projectiles) {
+			if (enemy->isOverlap(projectile)) {
+				bool pInList = std::find(deleteProjectiles.begin(),
+					deleteProjectiles.end(),
+					projectile) != deleteProjectiles.end();
+
+				if (!pInList) {
+					deleteProjectiles.push_back(projectile);
+				}
+
+				bool eInList = std::find(deleteEnemies.begin(),
+					deleteEnemies.end(),
+					enemy) != deleteEnemies.end();
+
+				if (!eInList) {
+					deleteEnemies.push_back(enemy);
+				}
+			}
+		}
+	}
+
+	for (auto const& delEnemy : deleteEnemies) {
+		enemies.remove(delEnemy);
+	}
+	deleteEnemies.clear();
+
+	for (auto const& delProjectile : deleteProjectiles) {
+		projectiles.remove(delProjectile);
+	}
+	deleteProjectiles.clear();
+
 
 	cout << "update GameLayer" << endl;
 }

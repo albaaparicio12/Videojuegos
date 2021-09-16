@@ -11,5 +11,7 @@ public:
 	void update();
 	void moveX(float axis);
 	void moveY(float axis);
+	int shootCadence = 30;
+	int shootTime = 0;
 
 };

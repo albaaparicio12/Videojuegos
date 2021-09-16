@@ -9,6 +9,13 @@ GameLayer::GameLayer(Game* game)
 void GameLayer::init() {
 	player = new Player(50, 50, game);
 	background = new Background("res/fondo.png", WIDTH * 0.5, HEIGHT * 0.5, game);
+
+	projectiles.clear(); // Vaciar por si reiniciamos el juego
+
+	enemies.clear(); // Vaciar por si reiniciamos el juego
+	enemies.push_back(new Enemy(300, 50, game));
+	enemies.push_back(new Enemy(300, 200, game));
+
 }
 
 void GameLayer::processControls() {
@@ -20,6 +27,10 @@ void GameLayer::processControls() {
 	//procesar controles
 	// Disparar
 	if (controlShoot) {
+		Projectile* newProjectile = player->shoot();
+		if (newProjectile != NULL) {
+			projectiles.push_back(newProjectile);
+		}
 
 	}
 	// Eje X
@@ -99,14 +110,36 @@ void GameLayer::keysToControls(SDL_Event event) {
 	}
 }
 
-
 void GameLayer::update() {
 	player->update();
+	for (auto const& enemy : enemies) {
+		enemy->update();
+	}
+
+	for (auto const& projectile : projectiles) {
+		projectile->update();
+	}
+
+	// Colisiones
+	for (auto const& enemy : enemies) {
+		if (player->isOverlap(enemy)) {
+			init();
+			return; // Cortar el for
+		}
+	}
+
 	cout << "update GameLayer" << endl;
 }
 
 void GameLayer::draw() {
 	background->draw();
+	for (auto const& projectile : projectiles) {
+		projectile->draw();
+	}
 	player->draw();
+	for (auto const& enemy : enemies) {
+		enemy->draw();
+	}
+
 	SDL_RenderPresent(game->renderer); // Renderiza
 }

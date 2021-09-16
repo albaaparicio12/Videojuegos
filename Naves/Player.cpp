@@ -17,3 +17,7 @@ void Player::moveX(float axis) {
 void Player::moveY(float axis) {
 	vy = axis * 3;
 }
+
+Projectile* Player::shoot() {
+	return new Projectile(x, y, game);
+}

@@ -12,6 +12,9 @@ using namespace std;
 #define WIDTH 480
 #define HEIGHT 320
 
+#include "Layer.h"
+class Layer;
+
 class Game
 {
 public:
@@ -20,4 +23,5 @@ public:
 	SDL_Window* window; // ventana
 	SDL_Renderer* renderer; // renderizador
 	bool loopActive; // Juego activo
+	Layer* gameLayer;
 };

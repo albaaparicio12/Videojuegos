@@ -118,6 +118,15 @@ void GameLayer::keysToControls(SDL_Event event) {
 }
 
 void GameLayer::update() {
+	// Generar enemigos
+	newEnemyTime--;
+	if (newEnemyTime <= 0) {
+		int rX = (rand() % (600 - 500)) + 1 + 500;
+		int rY = (rand() % (300 - 60)) + 1 + 60;
+		enemies.push_back(new Enemy(rX, rY, game));
+		newEnemyTime = 110 - killedEnemies*2;
+	}
+
 	player->update();
 	for (auto const& enemy : enemies) {
 		enemy->update();
@@ -164,6 +173,7 @@ void GameLayer::update() {
 
 	for (auto const& delEnemy : deleteEnemies) {
 		enemies.remove(delEnemy);
+		killedEnemies++;
 	}
 	deleteEnemies.clear();
 

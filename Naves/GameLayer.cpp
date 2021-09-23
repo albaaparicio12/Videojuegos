@@ -9,7 +9,7 @@ GameLayer::GameLayer(Game* game)
 void GameLayer::init() {
 	points = 0;
 	player = new Player(50, 50, game);
-	background = new Background("res/fondo.png", WIDTH * 0.5, HEIGHT * 0.5, game);
+	background = new Background("res/fondo_2.png", WIDTH * 0.5, HEIGHT * 0.5, game);
 	backgroundPoints = new Actor("res/icono_puntos.png", WIDTH * 0.85, HEIGHT * 0.05,24,24, game);
 	textPoints = new Text("0", WIDTH * 0.9, HEIGHT * 0.05, game);
 	

@@ -19,6 +19,10 @@ public:
 	void draw() override; // Va a sobrescribir
 	Animation* aIdleRight;
 	Animation* aIdleLeft;
+	Animation* aRunningRight;
+	Animation* aRunningLeft;
 	Animation* animation; // Referencia a la animación mostrada
-
+	
+	Orientation orientation = Orientation::RIGHT;
+	States state = States::IDLE;
 };

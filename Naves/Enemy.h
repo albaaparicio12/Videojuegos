@@ -9,7 +9,10 @@ public:
 	Enemy(float x, float y, Game* game);
 	void update();
 	void draw() override;
-
+	void impacted(); // Recibe impacto y pone animación de morir
+	
+	States state = States::IDLE;
+	Animation* aDying;
 	Animation* aMoving;
 	Animation* animation;
 };

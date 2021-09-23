@@ -21,6 +21,8 @@ public:
 	Animation* aIdleLeft;
 	Animation* aRunningRight;
 	Animation* aRunningLeft;
+	Animation* aShootingRight;
+	Animation* aShootingLeft;
 	Animation* animation; // Referencia a la animación mostrada
 	
 	Orientation orientation = Orientation::RIGHT;

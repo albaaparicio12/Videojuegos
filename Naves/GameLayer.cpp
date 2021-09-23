@@ -10,9 +10,9 @@ void GameLayer::init() {
 	points = 0;
 	player = new Player(50, 50, game);
 	background = new Background("res/fondo_2.png", WIDTH * 0.5, HEIGHT * 0.5, game);
-	backgroundPoints = new Actor("res/icono_puntos.png", WIDTH * 0.85, HEIGHT * 0.05,24,24, game);
+	backgroundPoints = new Actor("res/icono_puntos.png", WIDTH * 0.85, HEIGHT * 0.05, 24, 24, game);
 	textPoints = new Text("0", WIDTH * 0.9, HEIGHT * 0.05, game);
-	
+
 	audioBackground = new Audio("res/musica_ambiente.mp3", true);
 	audioBackground->play();
 
@@ -133,7 +133,7 @@ void GameLayer::update() {
 		int rX = (rand() % (600 - 500)) + 1 + 500;
 		int rY = (rand() % (300 - 60)) + 1 + 60;
 		enemies.push_back(new Enemy(rX, rY, game));
-		newEnemyTime = 110 - killedEnemies*2;
+		newEnemyTime = 110 - killedEnemies * 2;
 	}
 
 	player->update();
@@ -157,7 +157,7 @@ void GameLayer::update() {
 
 	list<Enemy*> deleteEnemies;
 	list<Projectile*> deleteProjectiles;
-	
+
 	for (auto const& projectile : projectiles) {
 		if (projectile->isInRender() == false) {
 

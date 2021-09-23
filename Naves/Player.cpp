@@ -4,22 +4,31 @@ Player::Player(float x, float y, Game* game)
 	: Actor("res/jugador.png", x, y, 35, 35, game) {
 
 	audioShoot = new Audio("res/efecto_disparo.wav", false);
-	
+
 	aIdleRight = new Animation("res/jugador_idle_derecha.png", width, height,
-		320, 40, 6, 8, game);
+		320, 40, 6, 8, true, game);
 	aIdleLeft = new Animation("res/jugador_idle_izquierda.png", width, height,
-		320, 40, 6, 8, game);
+		320, 40, 6, 8, true, game);
 	aRunningLeft = new Animation("res/jugador_corriendo_izquierda.png", width, height,
-		320, 40, 6, 8, game);
+		320, 40, 6, 8, true, game);
 	aRunningRight = new Animation("res/jugador_corriendo_derecha.png", width, height,
-		320, 40, 6, 8, game);
+		320, 40, 6, 8, true, game);
+	aShootingLeft = new Animation("res/jugador_disparando_izquierda.png", width, height,
+		160, 40, 6, 4, false, game);
+	aShootingRight = new Animation("res/jugador_disparando_derecha.png", width, height,
+		160, 40, 6, 4, false, game);
 
 	animation = aIdleRight;
 
 }
 
 void Player::update() {
-	animation->update();
+	bool hasAnimationEnded = animation->update();
+	if (hasAnimationEnded) {
+		if (state == States::SHOOTING) {
+			state = States::IDLE;
+		}
+	}
 
 	if (shootTime > 0) {
 		shootTime--;
@@ -28,32 +37,36 @@ void Player::update() {
 	//Update orientation
 	if (vx > 0) {
 		orientation = Orientation::RIGHT;
-	}else if (vx < 0) {
+	}
+	else if (vx < 0) {
 		orientation = Orientation::LEFT;
 	}
-	
+
 	//Update state
-	if (vx != 0) {
-		state = States::MOVING;
+	if (state != States::SHOOTING) {
+
+		if (vx != 0) {
+			state = States::MOVING;
+		}
+		else {
+			state = States::IDLE;
+		}
 	}
-	else {
-		state = States::IDLE;
-	}
-	
+
 	//Update animation
 	switch (state)
 	{
 	case (States::MOVING):
-		if (orientation == Orientation::RIGHT)
-			animation = aRunningRight;
-		if (orientation == Orientation::LEFT)
-			animation = aRunningLeft;
+		animation = orientation == Orientation::RIGHT ? aRunningRight : aRunningLeft;
+		break;
+	case (States::SHOOTING):
+		animation = orientation == Orientation::RIGHT ? aShootingRight : aShootingLeft;
 		break;
 	default:
 		animation = orientation == Orientation::RIGHT ? aIdleRight : aIdleLeft;
 		break;
 	}
-	
+
 	x = x + vx;
 	y = y + vy;
 }
@@ -68,9 +81,14 @@ void Player::moveY(float axis) {
 
 Projectile* Player::shoot() {
 	if (shootTime == 0) {
+		state = States::SHOOTING;
 		audioShoot->play();
 		shootTime = shootCadence;
-		return new Projectile(x, y, game);
+		auto projectile = new Projectile(x, y, game);
+		if (orientation == Orientation::LEFT) {
+			projectile->vx *= -1;
+		}
+		return projectile;
 	}
 	else {
 		return NULL;

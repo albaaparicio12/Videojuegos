@@ -2,10 +2,10 @@
 
 Animation::Animation(string filename, float actorWidth, float actorHeight,
 	float fileWidth, float fileHeight,
-	int updateFrecuence, int totalFrames, Game* game)
-	: actorHeight(actorHeight),actorWidth(actorWidth),fileHeight(fileHeight),
-	fileWidth(fileWidth),updateFrecuence(updateFrecuence),totalFrames(totalFrames),
-	game(game), updateTime(0),currentFrame(0){
+	int updateFrecuence, int totalFrames, bool loop, Game* game)
+	: actorHeight(actorHeight), actorWidth(actorWidth), fileHeight(fileHeight),
+	fileWidth(fileWidth), updateFrecuence(updateFrecuence), totalFrames(totalFrames),
+	game(game), updateTime(0), currentFrame(0), loop(loop) {
 
 	// Cargar textura
 	texture = game->getTexture(filename);
@@ -29,8 +29,12 @@ bool Animation::update() {
 		currentFrame++;
 		// Si lleva al ultimo frame vuelve al primero
 		if (currentFrame >= totalFrames) {
-			// Reiniciar es infinita
 			currentFrame = 0;
+			if (!loop) {
+				// No es infinita
+				// Indicar que finalizó 
+				return true;
+			}
 		}
 	}
 	//Actualizar el rectangulo del source (siguiente frame)

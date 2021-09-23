@@ -53,4 +53,8 @@ bool Actor::isInRender() {
 	return false;
 }
 
+Actor::~Actor() {
+	SDL_DestroyTexture(texture);
+}
+
 

@@ -127,7 +127,6 @@ void GameLayer::keysToControls(SDL_Event event) {
 }
 
 void GameLayer::update() {
-	projectiles.push_back(new Projectile(player->x, player->y, game));
 	// Generar enemigos
 	newEnemyTime--;
 	if (newEnemyTime <= 0) {
@@ -204,7 +203,6 @@ void GameLayer::update() {
 
 	for (auto const& delProjectile : deleteProjectiles) {
 		projectiles.remove(delProjectile);
-		delete delProjectile;
 	}
 	deleteProjectiles.clear();
 

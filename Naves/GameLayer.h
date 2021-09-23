@@ -6,6 +6,7 @@
 #include "Enemy.h"
 #include "Projectile.h"
 #include <list>
+#include "Text.h"
 
 
 class GameLayer : public Layer
@@ -29,4 +30,8 @@ public:
 
 	list<Enemy*> enemies;
 	list<Projectile*> projectiles;
+
+	Actor* backgroundPoints;
+	Text* textPoints;
+	int points;
 };

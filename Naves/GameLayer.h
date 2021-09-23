@@ -7,7 +7,7 @@
 #include "Projectile.h"
 #include <list>
 #include "Text.h"
-
+#include "Audio.h" 
 
 class GameLayer : public Layer
 {
@@ -34,4 +34,6 @@ public:
 	Actor* backgroundPoints;
 	Text* textPoints;
 	int points;
+
+	Audio* audioBackground;
 };

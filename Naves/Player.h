@@ -2,6 +2,7 @@
 
 #include "Actor.h"
 #include "Projectile.h"
+#include "Audio.h"
 
 class Player : public Actor
 {
@@ -13,5 +14,5 @@ public:
 	void moveY(float axis);
 	int shootCadence = 30;
 	int shootTime = 0;
-
+	Audio* audioShoot;
 };

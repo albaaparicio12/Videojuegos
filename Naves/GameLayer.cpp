@@ -13,6 +13,9 @@ void GameLayer::init() {
 	backgroundPoints = new Actor("res/icono_puntos.png", WIDTH * 0.85, HEIGHT * 0.05,24,24, game);
 	textPoints = new Text("0", WIDTH * 0.9, HEIGHT * 0.05, game);
 	
+	audioBackground = new Audio("res/musica_ambiente.mp3", true);
+	audioBackground->play();
+
 	projectiles.clear(); // Vaciar por si reiniciamos el juego
 
 	enemies.clear(); // Vaciar por si reiniciamos el juego

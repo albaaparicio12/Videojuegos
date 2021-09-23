@@ -1,5 +1,12 @@
 #include "Actor.h"
 
+Actor::Actor(string filename, float x, float y, Game* game) {
+	this->game = game;
+	texture = game->getTexture(filename);
+	this->x = x;
+	this->y = y;
+}
+
 Actor::Actor(string filename, float x, float y, int width, int height, Game* game) {
 	this->game = game;
 	SDL_Surface* surface = IMG_Load(filename.c_str());
@@ -54,7 +61,6 @@ bool Actor::isInRender() {
 }
 
 Actor::~Actor() {
-	SDL_DestroyTexture(texture);
 }
 
 

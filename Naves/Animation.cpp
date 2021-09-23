@@ -8,8 +8,7 @@ Animation::Animation(string filename, float actorWidth, float actorHeight,
 	game(game), updateTime(0),currentFrame(0){
 
 	// Cargar textura
-	SDL_Surface* surface = IMG_Load(filename.c_str());
-	texture = SDL_CreateTextureFromSurface(game->renderer, surface);
+	texture = game->getTexture(filename);
 
 	// Calcular lo que mide un fotograma/frame
 	frameWidth = fileWidth / totalFrames;

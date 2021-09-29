@@ -10,8 +10,11 @@ void Player::update() {
 		shootTime--;
 	}
 
-	x = x + vx;
-	y = y + vy;
+	//Comprobar que no se sale de los límites
+	if (x + vx > 0 + width / 2 && x + vx < WIDTH - width / 2)
+		x = x + vx;
+	if (y + vy > 0 + height / 2 && y + vy < HEIGHT - height / 2)
+		y = y + vy;
 }
 
 void Player::moveX(float axis) {

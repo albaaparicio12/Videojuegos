@@ -9,7 +9,7 @@ GameLayer::GameLayer(Game* game)
 void GameLayer::init() {
 	points = 0;
 	player = new Player(50, 50, game);
-	background = new Background("res/fondo_2.png", WIDTH * 0.5, HEIGHT * 0.5, game);
+	background = new Background("res/fondo_2.png", WIDTH * 0.5, HEIGHT * 0.5, -1, game);
 	backgroundPoints = new Actor("res/icono_puntos.png", WIDTH * 0.85, HEIGHT * 0.05, 24, 24, game);
 	textPoints = new Text("0", WIDTH * 0.9, HEIGHT * 0.05, game);
 
@@ -127,6 +127,7 @@ void GameLayer::keysToControls(SDL_Event event) {
 }
 
 void GameLayer::update() {
+	background->update();
 	// Generar enemigos
 	newEnemyTime--;
 	if (newEnemyTime <= 0) {
@@ -182,18 +183,26 @@ void GameLayer::update() {
 					deleteProjectiles.push_back(projectile);
 				}
 
-				bool eInList = std::find(deleteEnemies.begin(),
-					deleteEnemies.end(),
-					enemy) != deleteEnemies.end();
+				enemy->impacted();
+				points++;
+				textPoints->content = to_string(points);
 
-				if (!eInList) {
-					deleteEnemies.push_back(enemy);
-					points++;
-					textPoints->content = to_string(points);
-				}
 			}
 		}
 	}
+
+	for (auto const& enemy : enemies) {
+		if (enemy->state == States::DEAD){
+			bool eInList = std::find(deleteEnemies.begin(),
+				deleteEnemies.end(),
+				enemy) != deleteEnemies.end();
+
+			if (!eInList) {
+				deleteEnemies.push_back(enemy);
+			}
+		}
+	}
+
 
 	for (auto const& delEnemy : deleteEnemies) {
 		enemies.remove(delEnemy);

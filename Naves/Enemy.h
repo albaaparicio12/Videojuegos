@@ -2,7 +2,7 @@
 
 #include "Actor.h"
 #include "Animation.h"
-
+#include "Game.h"
 class Enemy : public Actor
 {
 public:

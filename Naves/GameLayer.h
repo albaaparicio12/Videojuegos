@@ -35,5 +35,8 @@ public:
 	Text* textPoints;
 	int points;
 
+	Actor* backgroundLives;
+	Text* textLives;
+
 	Audio* audioBackground;
 };

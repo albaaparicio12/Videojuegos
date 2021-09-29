@@ -25,6 +25,10 @@ void Player::moveY(float axis) {
 	vy = axis * 3;
 }
 
+void Player::getShoot() {
+	lives--;
+}
+
 Projectile* Player::shoot() {
 	if (shootTime == 0) {
 		audioShoot->play();

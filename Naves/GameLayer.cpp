@@ -9,10 +9,13 @@ GameLayer::GameLayer(Game* game)
 void GameLayer::init() {
 	points = 0;
 	player = new Player(50, 50, game);
-	background = new Background("res/fondo.png", WIDTH * 0.5, HEIGHT * 0.5,-1, game);
-	backgroundPoints = new Actor("res/icono_puntos.png", WIDTH * 0.85, HEIGHT * 0.05,24,24, game);
+	background = new Background("res/fondo.png", WIDTH * 0.5, HEIGHT * 0.5, -1, game);
+	backgroundPoints = new Actor("res/icono_puntos.png", WIDTH * 0.85, HEIGHT * 0.05, 24, 24, game);
 	textPoints = new Text("0", WIDTH * 0.9, HEIGHT * 0.05, game);
-	
+
+	backgroundLives = new Actor("res/icono_vidas2.png", WIDTH * 0.7, HEIGHT * 0.07, 40, 40, game);
+	textLives = new Text(to_string(player->lives), WIDTH * 0.78, HEIGHT * 0.05, game);
+
 	audioBackground = new Audio("res/musica_ambiente.mp3", true);
 	audioBackground->play();
 
@@ -134,7 +137,7 @@ void GameLayer::update() {
 		int rX = (rand() % (600 - 500)) + 1 + 500;
 		int rY = (rand() % (300 - 60)) + 1 + 60;
 		enemies.push_back(new Enemy(rX, rY, game));
-		newEnemyTime = 110 - killedEnemies*2;
+		newEnemyTime = 110 - killedEnemies * 2;
 	}
 
 	player->update();
@@ -149,7 +152,13 @@ void GameLayer::update() {
 	// Colisiones
 	for (auto const& enemy : enemies) {
 		if (player->isOverlap(enemy)) {
-			init();
+			enemies.remove(enemy);
+			if (player->lives > 1) {
+				player->getShoot();
+				textLives->content = to_string(player->lives);
+			}
+			else
+				init();
 			return; // Cortar el for
 		}
 	}
@@ -158,7 +167,7 @@ void GameLayer::update() {
 
 	list<Enemy*> deleteEnemies;
 	list<Projectile*> deleteProjectiles;
-	
+
 	for (auto const& projectile : projectiles) {
 		if (projectile->isInRender() == false) {
 
@@ -189,6 +198,7 @@ void GameLayer::update() {
 
 				if (!eInList) {
 					deleteEnemies.push_back(enemy);
+					killedEnemies++;
 					points++;
 					textPoints->content = to_string(points);
 				}
@@ -198,7 +208,6 @@ void GameLayer::update() {
 
 	for (auto const& delEnemy : deleteEnemies) {
 		enemies.remove(delEnemy);
-		killedEnemies++;
 	}
 	deleteEnemies.clear();
 
@@ -223,6 +232,8 @@ void GameLayer::draw() {
 
 	backgroundPoints->draw();
 	textPoints->draw();
+	backgroundLives->draw();
+	textLives->draw();
 
 	SDL_RenderPresent(game->renderer); // Renderiza
 }

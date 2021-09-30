@@ -5,9 +5,14 @@
 #include "Background.h"
 #include "Enemy.h"
 #include "Projectile.h"
-#include <list>
 #include "Text.h"
 #include "Audio.h" 
+#include "Tile.h" 
+
+#include <fstream> // Leer ficheros
+#include <sstream> // Leer líneas / String
+#include <list>
+
 
 class GameLayer : public Layer
 {
@@ -36,4 +41,10 @@ public:
 	int points;
 
 	Audio* audioBackground;
+
+	void loadMap(string name);
+	void loadMapObject(char character, int x, int y);
+	int mapWidth;
+	list<Tile*> tiles;
+
 };

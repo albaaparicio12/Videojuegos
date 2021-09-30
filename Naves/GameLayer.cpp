@@ -7,8 +7,9 @@ GameLayer::GameLayer(Game* game)
 }
 
 void GameLayer::init() {
+	tiles.clear();
 	points = 0;
-	player = new Player(50, 50, game);
+	//player = new Player(50, 50, game);
 	background = new Background("res/fondo_2.png", WIDTH * 0.5, HEIGHT * 0.5, -1, game);
 	backgroundPoints = new Actor("res/icono_puntos.png", WIDTH * 0.85, HEIGHT * 0.05, 24, 24, game);
 	textPoints = new Text("0", WIDTH * 0.9, HEIGHT * 0.05, game);
@@ -19,8 +20,7 @@ void GameLayer::init() {
 	projectiles.clear(); // Vaciar por si reiniciamos el juego
 
 	enemies.clear(); // Vaciar por si reiniciamos el juego
-	enemies.push_back(new Enemy(300, 50, game));
-	enemies.push_back(new Enemy(300, 200, game));
+	loadMap("res/0.txt");
 
 }
 
@@ -128,7 +128,8 @@ void GameLayer::keysToControls(SDL_Event event) {
 
 void GameLayer::update() {
 	background->update();
-	// Generar enemigos
+	/* Generar enemigos
+
 	newEnemyTime--;
 	if (newEnemyTime <= 0) {
 		int rX = (rand() % (600 - 500)) + 1 + 500;
@@ -136,7 +137,7 @@ void GameLayer::update() {
 		enemies.push_back(new Enemy(rX, rY, game));
 		newEnemyTime = 110 - killedEnemies * 2;
 	}
-
+	*/
 	player->update();
 	for (auto const& enemy : enemies) {
 		enemy->update();
@@ -192,7 +193,7 @@ void GameLayer::update() {
 	}
 
 	for (auto const& enemy : enemies) {
-		if (enemy->state == States::DEAD){
+		if (enemy->state == States::DEAD) {
 			bool eInList = std::find(deleteEnemies.begin(),
 				deleteEnemies.end(),
 				enemy) != deleteEnemies.end();
@@ -221,6 +222,11 @@ void GameLayer::update() {
 
 void GameLayer::draw() {
 	background->draw();
+
+	for (auto const& tile : tiles) {
+		tile->draw();
+	}
+
 	for (auto const& projectile : projectiles) {
 		projectile->draw();
 	}
@@ -233,4 +239,60 @@ void GameLayer::draw() {
 	textPoints->draw();
 
 	SDL_RenderPresent(game->renderer); // Renderiza
+}
+
+void GameLayer::loadMap(string name) {
+	char character;
+	string line;
+	ifstream streamFile(name.c_str());
+	if (!streamFile.is_open()) {
+		cout << "Falla abrir el fichero de mapa" << endl;
+		return;
+	}
+	else {
+		// Por línea
+		for (int i = 0; getline(streamFile, line); i++) {
+			istringstream streamLine(line);
+			mapWidth = line.length() * 40; // Ancho del mapa en pixels
+			// Por carácter (en cada línea)
+			for (int j = 0; !streamLine.eof(); j++) {
+				streamLine >> character; // Leer character 
+				cout << character;
+				float x = 40 / 2 + j * 40; // x central
+				float y = 32 + i * 32; // y suelo
+				loadMapObject(character, x, y);
+			}
+
+			cout << character << endl;
+		}
+	}
+	streamFile.close();
+}
+
+void GameLayer::loadMapObject(char character, int x, int y)
+{
+	//enemies.push_back(new Enemy(300, 50, game));
+	switch (character) {
+	case 'E': {
+		Enemy* enemy = new Enemy(x, y, game);
+		// modificación para empezar a contar desde el suelo.
+		enemy->y = enemy->y - enemy->height / 2;
+		enemies.push_back(enemy);
+		break;
+	}
+
+	case '1': {
+		player = new Player(x, y, game);
+		// modificación para empezar a contar desde el suelo.
+		player->y = player->y - player->height / 2;
+		break;
+	}
+	case '#': {
+		Tile* tile = new Tile("res/bloque_tierra.png", x, y, game);
+		// modificación para empezar a contar desde el suelo.
+		tile->y = tile->y - tile->height / 2;
+		tiles.push_back(tile);
+		break;
+	}
+	}
 }

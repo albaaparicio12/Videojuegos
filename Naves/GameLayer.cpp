@@ -123,6 +123,11 @@ void GameLayer::keysToControls(SDL_Event event) {
 }
 
 void GameLayer::update() {
+	// Jugador se cae
+	if (player->y > HEIGHT + 80) {
+		init();
+	}
+
 	space->update();
 	background->update();
 	/* Generar enemigos

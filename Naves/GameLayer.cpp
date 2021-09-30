@@ -222,7 +222,18 @@ void GameLayer::update() {
 }
 
 void GameLayer::calculateScroll() {
-	scrollX = player->x - 200;
+	if (player->x < WIDTH * .3 || player->x > mapWidth - WIDTH * .7) {
+		return; //Si supero los limites de la pantalla corto el juego
+	}
+	// limite izquierda
+	if (player->x - scrollX < WIDTH * 0.3) {
+		scrollX = player->x - WIDTH * 0.3;
+	}
+	// limite derecha
+	if (player->x - scrollX > WIDTH * 0.7) {
+		scrollX = player->x - WIDTH * 0.7;
+	}
+
 }
 
 void GameLayer::draw() {

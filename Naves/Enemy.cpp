@@ -31,7 +31,6 @@ void Enemy::update() {
 
 	if (state != States::DYING) {
 		vx = -1;
-		x = x + vx;
 	}
 
 }

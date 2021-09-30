@@ -8,6 +8,7 @@
 #include "Text.h"
 #include "Audio.h" 
 #include "Tile.h" 
+#include "Space.h" 
 
 #include <fstream> // Leer ficheros
 #include <sstream> // Leer líneas / String
@@ -50,5 +51,5 @@ public:
 	void calculateScroll();
 	float scrollX = 0;
 
-
+	Space* space;
 };

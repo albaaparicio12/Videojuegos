@@ -16,7 +16,7 @@ public:
 	int shootCadence = 30;
 	int shootTime = 0;
 	Audio* audioShoot;
-	void draw() override; // Va a sobrescribir
+	void draw(float scrollX = 0) override; // Va a sobrescribir
 	Animation* aIdleRight;
 	Animation* aIdleLeft;
 	Animation* aRunningRight;

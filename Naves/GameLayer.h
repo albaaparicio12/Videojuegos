@@ -47,4 +47,8 @@ public:
 	int mapWidth;
 	list<Tile*> tiles;
 
+	void calculateScroll();
+	float scrollX = 0;
+
+
 };

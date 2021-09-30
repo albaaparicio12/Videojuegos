@@ -7,6 +7,7 @@ GameLayer::GameLayer(Game* game)
 }
 
 void GameLayer::init() {
+	scrollX = 0;
 	tiles.clear();
 	points = 0;
 	//player = new Player(50, 50, game);
@@ -161,7 +162,7 @@ void GameLayer::update() {
 	list<Projectile*> deleteProjectiles;
 
 	for (auto const& projectile : projectiles) {
-		if (projectile->isInRender() == false) {
+		if (projectile->isInRender(scrollX) == false) {
 
 			bool pInList = std::find(deleteProjectiles.begin(),
 				deleteProjectiles.end(),
@@ -220,19 +221,24 @@ void GameLayer::update() {
 	cout << "update GameLayer" << endl;
 }
 
+void GameLayer::calculateScroll() {
+	scrollX = player->x - 200;
+}
+
 void GameLayer::draw() {
+	calculateScroll();
 	background->draw();
 
 	for (auto const& tile : tiles) {
-		tile->draw();
+		tile->draw(scrollX);
 	}
 
 	for (auto const& projectile : projectiles) {
-		projectile->draw();
+		projectile->draw(scrollX);
 	}
-	player->draw();
+	player->draw(scrollX);
 	for (auto const& enemy : enemies) {
-		enemy->draw();
+		enemy->draw(scrollX);
 	}
 
 	backgroundPoints->draw();
@@ -280,7 +286,6 @@ void GameLayer::loadMapObject(char character, int x, int y)
 		enemies.push_back(enemy);
 		break;
 	}
-
 	case '1': {
 		player = new Player(x, y, game);
 		// modificación para empezar a contar desde el suelo.

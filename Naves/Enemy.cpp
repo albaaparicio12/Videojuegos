@@ -4,7 +4,9 @@ Enemy::Enemy(float x, float y, Game* game)
 	: Actor("res/enemigo.png", x, y, 36, 40, game) {
 
 	vx = 1;
-	
+	vxIntelligence = -1;
+	vx = vxIntelligence;
+
 	state = States::IDLE;
 
 	aDying = new Animation("res/enemigo_morir.png", width, height,
@@ -29,9 +31,18 @@ void Enemy::update() {
 		animation = aDying;
 	}
 
+	// Establecer velocidad
 	if (state != States::DYING) {
-		vx = -1;
+		// no está muerto y se ha quedado parado
+		if (vx == 0) {
+			vxIntelligence *= -1;
+			vx = vxIntelligence;
+		}
 	}
+	else {
+		vx = 0;
+	}
+
 
 }
 

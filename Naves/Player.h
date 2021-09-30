@@ -31,4 +31,7 @@ public:
 	void jump();
 	bool isOnAir;
 
+	void loseLife();
+	int lifes = 3;
+	int invulnerableTime = 0;
 };

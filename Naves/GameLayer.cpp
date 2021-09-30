@@ -7,7 +7,7 @@ GameLayer::GameLayer(Game* game)
 }
 
 void GameLayer::init() {
-	space = new Space(0);
+	space = new Space(1);
 	scrollX = 0;
 	tiles.clear();
 	points = 0;
@@ -51,18 +51,11 @@ void GameLayer::processControls() {
 	}
 	else {
 		player->moveX(0);
-	}
+	}	
 
 	// Eje Y
-	if (controlMoveY > 0) {
-		player->moveY(1);
-	}
-	else if (controlMoveY < 0) {
-		player->moveY(-1);
-	}
-	else {
-		player->moveY(0);
-	}
+	if (controlMoveY < 0) 
+		player->jump();
 
 }
 
@@ -165,7 +158,7 @@ void GameLayer::update() {
 	list<Projectile*> deleteProjectiles;
 
 	for (auto const& projectile : projectiles) {
-		if (projectile->isInRender(scrollX) == false) {
+		if (projectile->isInRender(scrollX) == false || projectile->vx == 0) {
 
 			bool pInList = std::find(deleteProjectiles.begin(),
 				deleteProjectiles.end(),

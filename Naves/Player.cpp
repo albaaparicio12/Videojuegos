@@ -24,6 +24,13 @@ Player::Player(float x, float y, Game* game)
 
 void Player::update() {
 	bool hasAnimationEnded = animation->update();
+	if (collisionDown == true) {
+		isOnAir = false;
+	}
+	else {
+		isOnAir = true;
+	}
+
 	if (hasAnimationEnded) {
 		if (state == States::SHOOTING) {
 			state = States::IDLE;
@@ -98,3 +105,9 @@ void Player::draw(float scrollX) {
 	animation->draw(x- scrollX, y);
 }
 
+void Player::jump() {
+	if (!isOnAir) {
+		vy = -16;
+		isOnAir = true;
+	}
+}

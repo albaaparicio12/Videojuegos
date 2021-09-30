@@ -20,4 +20,5 @@ public:
 	int fileHeight;
 	Game* game; // referencia al juego
 	bool isInRender(float scrollX = 0);
+	bool collisionDown;
 };

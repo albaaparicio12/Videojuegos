@@ -24,14 +24,16 @@ public:
 	Animation* aShootingRight;
 	Animation* aShootingLeft;
 	Animation* animation; // Referencia a la animación mostrada
-	
+	Animation* aJumpingRight;
+	Animation* aJumpingLeft;
+
 	Orientation orientation = Orientation::RIGHT;
 	States state = States::IDLE;
 	
 	void jump();
 	bool isOnAir;
-
 	void loseLife();
 	int lifes = 3;
 	int invulnerableTime = 0;
+
 };

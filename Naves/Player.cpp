@@ -17,12 +17,25 @@ Player::Player(float x, float y, Game* game)
 		160, 40, 6, 4, false, game);
 	aShootingRight = new Animation("res/jugador_disparando_derecha.png", width, height,
 		160, 40, 6, 4, false, game);
+	aJumpingRight = new Animation("res/jugador_saltando_derecha.png",
+		width, height, 160, 40, 6, 4, true, game);
+	aJumpingLeft = new Animation("res/jugador_saltando_izquierda.png",
+		width, height, 160, 40, 6, 4, true, game);
 
 	animation = aIdleRight;
 
 }
 
 void Player::update() {
+	// En el aire y moviéndose, PASA a estar saltando
+	if (isOnAir && state == States::MOVING) {
+		state = States::JUMPING;
+	}
+	// No está en el aire y estaba saltando, PASA a moverse
+	if (!isOnAir && state == States::JUMPING) {
+		state = States::MOVING;
+	}
+
 	if (invulnerableTime > 0) {
 		invulnerableTime--;
 	}
@@ -66,12 +79,15 @@ void Player::update() {
 	//Update animation
 	switch (state)
 	{
+	case (States::JUMPING):
+		animation = orientation == Orientation::RIGHT ? aJumpingRight : aJumpingLeft;
+		break;
 	case (States::MOVING):
 		animation = orientation == Orientation::RIGHT ? aRunningRight : aRunningLeft;
 		break;
 	case (States::SHOOTING):
 		animation = orientation == Orientation::RIGHT ? aShootingRight : aShootingLeft;
-		break;
+		break;	
 	default:
 		animation = orientation == Orientation::RIGHT ? aIdleRight : aIdleLeft;
 		break;
@@ -113,8 +129,6 @@ void Player::draw(float scrollX) {
 			animation->draw(x - scrollX, y);
 		}
 	}
-
-	animation->draw(x- scrollX, y);
 }
 
 void Player::jump() {

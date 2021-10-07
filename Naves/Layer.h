@@ -7,10 +7,10 @@ class Layer
 {
 public:
 	Layer(Game* game);
-	virtual void init() = 0;
-	virtual void processControls() = 0;
-	virtual void update() = 0;
-	virtual void draw() = 0;
+	virtual void init() {};
+	virtual void processControls() {};
+	virtual void update() {};
+	virtual void draw() {};
 
 	Game* game;
 };

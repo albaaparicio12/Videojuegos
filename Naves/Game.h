@@ -34,7 +34,8 @@ public:
 	SDL_Renderer* renderer; // renderizador
 	bool loopActive; // Juego activo
 	Layer* gameLayer;
-
+	Layer* layer;
+	Layer* menuLayer;
 	int currentLevel = 0;
 	int finalLevel = 2;
 
@@ -42,6 +43,9 @@ public:
 	int const inputKeyboard = 1;
 	int const inputMouse = 2;
 	int const inputGamePad = 3;
+
+	
+
 };
 
 enum class States {

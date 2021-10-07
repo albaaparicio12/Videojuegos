@@ -4,7 +4,11 @@ Player::Player(float x, float y, Game* game)
 	: Actor("res/jugador.png", x, y, 35, 35, game) {
 
 	audioShoot = new Audio("res/efecto_disparo.wav", false);
-
+	
+	aJumpingRight = new Animation("res/jugador_saltando_derecha.png",
+		width, height, 160, 40, 6, 4, true, game);
+	aJumpingLeft = new Animation("res/jugador_saltando_izquierda.png",
+		width, height, 160, 40, 6, 4, true, game);
 	aIdleRight = new Animation("res/jugador_idle_derecha.png", width, height,
 		320, 40, 6, 8, true, game);
 	aIdleLeft = new Animation("res/jugador_idle_izquierda.png", width, height,
@@ -17,25 +21,13 @@ Player::Player(float x, float y, Game* game)
 		160, 40, 6, 4, false, game);
 	aShootingRight = new Animation("res/jugador_disparando_derecha.png", width, height,
 		160, 40, 6, 4, false, game);
-	aJumpingRight = new Animation("res/jugador_saltando_derecha.png",
-		width, height, 160, 40, 6, 4, true, game);
-	aJumpingLeft = new Animation("res/jugador_saltando_izquierda.png",
-		width, height, 160, 40, 6, 4, true, game);
 
 	animation = aIdleRight;
 
 }
 
 void Player::update() {
-	// En el aire y moviéndose, PASA a estar saltando
-	if (isOnAir && state == States::MOVING) {
-		state = States::JUMPING;
-	}
-	// No está en el aire y estaba saltando, PASA a moverse
-	if (!isOnAir && state == States::JUMPING) {
-		state = States::MOVING;
-	}
-
+	
 	if (invulnerableTime > 0) {
 		invulnerableTime--;
 	}
@@ -74,6 +66,15 @@ void Player::update() {
 		else {
 			state = States::IDLE;
 		}
+		// En el aire y moviéndose, PASA a estar saltando
+		if (isOnAir && state == States::MOVING) {
+			state = States::JUMPING;
+		}
+		// No está en el aire y estaba saltando, PASA a moverse
+		if (!isOnAir && state == States::JUMPING) {
+			state = States::MOVING;
+		}
+		
 	}
 
 	//Update animation

@@ -9,6 +9,7 @@
 #include "Audio.h" 
 #include "Tile.h" 
 #include "Space.h" 
+#include "Pad.h"
 
 #include <fstream> // Leer ficheros
 #include <sstream> // Leer líneas / String
@@ -58,4 +59,5 @@ public:
 	Actor* buttonJump;
 	Actor* buttonShoot;
 	void mouseToControls(SDL_Event event); // USO DE MOUSE
+	Pad* pad;
 };

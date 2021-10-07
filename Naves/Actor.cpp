@@ -5,9 +5,11 @@ Actor::Actor(string filename, float x, float y, Game* game) {
 	texture = game->getTexture(filename);
 	this->x = x;
 	this->y = y;
+	clicked = false;
 }
 
 Actor::Actor(string filename, float x, float y, int width, int height, Game* game) {
+	clicked = false;
 	this->game = game;
 	SDL_Surface* surface = IMG_Load(filename.c_str());
 	texture = SDL_CreateTextureFromSurface(game->renderer, surface);
@@ -60,5 +62,14 @@ bool Actor::isInRender(float scrollX) {
 	return false;
 }
 
+bool Actor::containsPoint(int pointX, int pointY) {
+	if (pointY >= y - height / 2 &&
+		pointY <= y + height / 2 &&
+		pointX <= x + width / 2 &&
+		pointX >= x - width / 2) {
+		return true;
+	}
+	return false;
+}
 
 

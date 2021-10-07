@@ -20,5 +20,8 @@ public:
 	int fileHeight;
 	Game* game; // referencia al juego
 	bool isInRender(float scrollX = 0);
+	bool containsPoint(int pointX, int pointY); // contiene punto
 	bool collisionDown;
+	bool clicked; // Está pulsado
+
 };

@@ -52,4 +52,10 @@ public:
 	float scrollX = 0;
 
 	Space* space;
+	Tile* cup; // Elemento de final de nivel
+
+	// Elementos de interfaz
+	Actor* buttonJump;
+	Actor* buttonShoot;
+	void mouseToControls(SDL_Event event); // USO DE MOUSE
 };

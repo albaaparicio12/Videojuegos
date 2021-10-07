@@ -34,6 +34,10 @@ public:
 	SDL_Renderer* renderer; // renderizador
 	bool loopActive; // Juego activo
 	Layer* gameLayer;
+
+	int currentLevel = 0;
+	int finalLevel = 2;
+
 };
 
 enum class States {

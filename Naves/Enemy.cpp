@@ -11,7 +11,9 @@ Enemy::Enemy(string filename, float x, float y, Game* game)
 
 void Enemy::update() {
 	animation->update();
-
+	if (shootTime > 0) {
+		shootTime--;
+	}
 	vx = -1;
 	x = x + vx;
 }
@@ -25,6 +27,10 @@ void Enemy::getShoot() {
 }
 
 ProjectileEnemy* Enemy::shoot() {
-	audioShoot->play();
-	return new ProjectileEnemy(x, y, game);
+	if (shootTime == 0) {
+		shootTime = shootCadence;
+		audioShoot->play();
+		return new ProjectileEnemy(x, y, game);
+	}
+	else return NULL;
 }

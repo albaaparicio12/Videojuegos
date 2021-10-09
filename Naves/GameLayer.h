@@ -8,6 +8,8 @@
 #include <list>
 #include "Text.h"
 #include "Audio.h" 
+#include "GreyEnemy.h"
+#include "RedEnemy.h"
 
 class GameLayer : public Layer
 {
@@ -20,6 +22,7 @@ public:
 	void keysToControls(SDL_Event event);
 
 	int newEnemyTime = 0;
+	int newDifficultEnemyTime = 0;
 	int killedEnemies = 0;
 
 	Player* player;

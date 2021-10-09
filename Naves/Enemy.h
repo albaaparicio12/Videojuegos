@@ -2,6 +2,8 @@
 
 #include "Actor.h"
 #include "Animation.h"
+#include "ProjectileEnemy.h"
+#include "Audio.h"
 
 class Enemy : public Actor
 {
@@ -10,6 +12,8 @@ public:
 	void update();
 	void draw() override;
 	void getShoot();
+	ProjectileEnemy* shoot();
+	Audio* audioShoot;
 	int lives;
 
 	Animation* aMoving;

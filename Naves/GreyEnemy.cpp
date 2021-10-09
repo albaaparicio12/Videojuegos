@@ -8,6 +8,7 @@ GreyEnemy::GreyEnemy(float x, float y, Game* game)
 	aMoving = new Animation("res/enemigo_movimiento.png", width, height,
 		108, 40, 6, 3, game);
 	animation = aMoving;
+	audioShoot = new Audio("res/efecto_disparo.wav", false);
 
 }
 

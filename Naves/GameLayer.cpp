@@ -20,7 +20,7 @@ void GameLayer::init() {
 	audioBackground->play();
 
 	projectiles.clear(); // Vaciar por si reiniciamos el juego
-
+	projectilesEnemies.clear();
 	enemies.clear(); // Vaciar por si reiniciamos el juego
 }
 
@@ -147,10 +147,18 @@ void GameLayer::update() {
 	player->update();
 	for (auto const& enemy : enemies) {
 		enemy->update();
+		ProjectileEnemy* newProjectile = enemy->shoot();
+		if (newProjectile != NULL) {
+			projectilesEnemies.push_back(newProjectile);
+		}
 	}
 
 	for (auto const& projectile : projectiles) {
 		projectile->update();
+	}
+
+	for (auto const& projectileEnemie : projectilesEnemies) {
+		projectileEnemie->update();
 	}
 
 	// Colisiones
@@ -232,6 +240,10 @@ void GameLayer::draw() {
 	for (auto const& projectile : projectiles) {
 		projectile->draw();
 	}
+	for (auto const& projectileEnemie : projectilesEnemies) {
+		projectileEnemie->draw();
+	}
+
 	player->draw();
 	for (auto const& enemy : enemies) {
 		enemy->draw();

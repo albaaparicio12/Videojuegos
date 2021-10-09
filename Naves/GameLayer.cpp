@@ -22,9 +22,6 @@ void GameLayer::init() {
 	projectiles.clear(); // Vaciar por si reiniciamos el juego
 
 	enemies.clear(); // Vaciar por si reiniciamos el juego
-	enemies.push_back(new Enemy(300, 50, game));
-	enemies.push_back(new Enemy(300, 200, game));
-
 }
 
 void GameLayer::processControls() {
@@ -133,11 +130,18 @@ void GameLayer::update() {
 	background->update();
 	// Generar enemigos
 	newEnemyTime--;
+	newDifficultEnemyTime--;
 	if (newEnemyTime <= 0) {
 		int rX = (rand() % (600 - 500)) + 1 + 500;
 		int rY = (rand() % (300 - 60)) + 1 + 60;
-		enemies.push_back(new Enemy(rX, rY, game));
+		enemies.push_back(new GreyEnemy(rX, rY, game));		
 		newEnemyTime = 110 - killedEnemies * 2;
+	}
+	if (newDifficultEnemyTime <= 0) {
+		int rX = (rand() % (600 - 500)) + 1 + 500;
+		int rY = (rand() % (300 - 60)) + 1 + 60;
+		enemies.push_back(new RedEnemy(rX, rY, game));
+		newDifficultEnemyTime = 250 - killedEnemies * 2;
 	}
 
 	player->update();
@@ -197,10 +201,13 @@ void GameLayer::update() {
 					enemy) != deleteEnemies.end();
 
 				if (!eInList) {
-					deleteEnemies.push_back(enemy);
-					killedEnemies++;
-					points++;
-					textPoints->content = to_string(points);
+					enemy->getShoot();
+					if (enemy->lives <= 0) {
+						deleteEnemies.push_back(enemy);
+						killedEnemies++;
+						points++;
+						textPoints->content = to_string(points);
+					}
 				}
 			}
 		}

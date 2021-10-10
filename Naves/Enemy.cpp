@@ -7,12 +7,13 @@ Enemy::Enemy(string filename, float x, float y, Game* game)
 	aMoving = new Animation("res/enemigo_movimiento.png", width, height,
 		108, 40, 6, 3, game);
 	animation = aMoving;
-	
 }
 
 void Enemy::update() {
 	animation->update();
-
+	if (shootTime > 0) {
+		shootTime--;
+	}
 	vx = -1;
 	x = x + vx;
 }
@@ -23,4 +24,13 @@ void Enemy::draw() {
 
 void Enemy::getShoot() {
 	lives--;
+}
+
+ProjectileEnemy* Enemy::shoot() {
+	if (shootTime == 0) {
+		shootTime = shootCadence;
+		audioShoot->play();
+		return new ProjectileEnemy(x, y, game);
+	}
+	else return NULL;
 }

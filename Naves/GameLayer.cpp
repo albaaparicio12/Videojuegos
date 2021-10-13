@@ -19,10 +19,12 @@ void GameLayer::init() {
 	audioBackground = new Audio("res/musica_ambiente.mp3", true);
 	audioBackground->play();
 
+	coins.clear();
 	projectiles.clear(); // Vaciar por si reiniciamos el juego
 	projectilesEnemies.clear();
 	enemies.clear(); // Vaciar por si reiniciamos el juego
 }
+
 
 void GameLayer::processControls() {
 	// obtener controles
@@ -144,6 +146,15 @@ void GameLayer::update() {
 		newDifficultEnemyTime = 250 - killedEnemies * 2;
 	}
 
+	if (cointTime <= 0) {
+		int rX = (rand() % (600 - 500)) + 1 + 500;
+		int rY = (rand() % (300 - 60)) + 1 + 60;
+		coins.push_back(new Coin(rX, rY, game));
+		cointTime = 400;
+	}
+	else
+		cointTime--;
+
 	player->update();
 	for (auto const& enemy : enemies) {
 		enemy->update();
@@ -161,6 +172,10 @@ void GameLayer::update() {
 		projectileEnemie->update();
 	}
 
+	for (auto const& coin : coins) {
+		coin->update();
+	}
+
 	// Colisiones
 	for (auto const& enemy : enemies) {
 		if (player->isOverlap(enemy)) {
@@ -172,6 +187,16 @@ void GameLayer::update() {
 			else
 				init();
 			return; // Cortar el for
+		}
+	}
+
+	list<Coin*> deleteCoins;
+
+	for (auto const& coin : coins) {
+		if (player->isOverlap(coin)) {
+			deleteCoins.push_back(coin);
+			player->getCoin();
+			textLives->content = to_string(player->lives);
 		}
 	}
 
@@ -266,12 +291,20 @@ void GameLayer::update() {
 	}
 	deleteProjectilesEnemies.clear();
 
+	for (auto const& delCoin : deleteCoins) {
+		coins.remove(delCoin);
+	}
+	deleteCoins.clear();
 
 	cout << "update GameLayer" << endl;
 }
 
 void GameLayer::draw() {
 	background->draw();
+
+	for (auto const& coin : coins) {
+		coin->draw();
+	}
 	for (auto const& projectile : projectiles) {
 		projectile->draw();
 	}
@@ -291,3 +324,4 @@ void GameLayer::draw() {
 
 	SDL_RenderPresent(game->renderer); // Renderiza
 }
+

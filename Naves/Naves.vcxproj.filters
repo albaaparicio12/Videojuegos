@@ -73,7 +73,7 @@
       <Filter>Archivos de origen\Actores</Filter>
     </ClCompile>
     <ClCompile Include="Coin.cpp">
-      <Filter>Archivos de origen</Filter>
+      <Filter>Archivos de origen\Actores</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -117,6 +117,9 @@
       <Filter>Archivos de encabezado\Actores</Filter>
     </ClInclude>
     <ClInclude Include="ProjectileEnemy.h">
+      <Filter>Archivos de encabezado\Actores</Filter>
+    </ClInclude>
+    <ClInclude Include="Coin.h">
       <Filter>Archivos de encabezado\Actores</Filter>
     </ClInclude>
   </ItemGroup>

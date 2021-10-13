@@ -40,3 +40,7 @@ Projectile* Player::shoot() {
 	}
 
 }
+
+void Player::getCoin() {
+	lives++;
+}

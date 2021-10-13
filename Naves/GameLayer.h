@@ -11,6 +11,7 @@
 #include "Audio.h" 
 #include "GreyEnemy.h"
 #include "RedEnemy.h"
+#include "Coin.h"
 
 class GameLayer : public Layer
 {
@@ -35,6 +36,7 @@ public:
 	list<Enemy*> enemies;
 	list<Projectile*> projectiles;
 	list<ProjectileEnemy*> projectilesEnemies;
+	list<Coin*> coins;
 
 	Actor* backgroundPoints;
 	Text* textPoints;
@@ -44,4 +46,6 @@ public:
 	Text* textLives;
 
 	Audio* audioBackground;
+
+	int cointTime = 0;
 };

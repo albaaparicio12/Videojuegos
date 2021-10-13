@@ -17,4 +17,5 @@ public:
 	Audio* audioShoot;
 	int lives = 3;
 	void getShoot();
+	void getCoin();
 };

@@ -51,6 +51,9 @@ public:
 
 	void calculateScroll();
 	float scrollX = 0;
+	Actor* message;
+	bool pause;
+	bool controlContinue = false;
 
 	Space* space;
 	Tile* cup; // Elemento de final de nivel

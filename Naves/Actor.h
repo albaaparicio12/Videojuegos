@@ -23,5 +23,7 @@ public:
 	bool containsPoint(int pointX, int pointY); // contiene punto
 	bool collisionDown;
 	bool clicked; // Está pulsado
+	bool outRight;
+	bool outLeft;
 
 };

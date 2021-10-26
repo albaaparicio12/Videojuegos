@@ -22,8 +22,6 @@ void GameLayer::init() {
 	background = new Background("res/fondo_2.png", WIDTH * 0.5, HEIGHT * 0.5, -1, game);
 	backgroundPoints = new Actor("res/icono_puntos.png", WIDTH * 0.85, HEIGHT * 0.05, 24, 24, game);
 	textPoints = new Text("0", WIDTH * 0.9, HEIGHT * 0.05, game);
-	backgroundItems = new Actor("res/icono_recolectable.png", WIDTH * 0.72, HEIGHT * 0.08, 40, 40, game);
-	textItems = new Text("0", WIDTH * 0.79, HEIGHT * 0.05, game);
 
 	audioBackground = new Audio("res/musica_ambiente.mp3", true);
 	audioBackground->play();
@@ -196,10 +194,6 @@ void GameLayer::update() {
 		projectileEnemie->update();
 	}
 
-	for (auto const& item : listItems) {
-		item->update();
-	}
-
 	// Colisiones
 	for (auto const& enemy : enemies) {
 		if (player->isOverlap(enemy)) {
@@ -216,7 +210,6 @@ void GameLayer::update() {
 	list<Enemy*> deleteEnemies;
 	list<Projectile*> deleteProjectiles;
 	list<ProjectileEnemy*> deleteProjectilesEnemies;
-	list<Recolectable*> deleteRecolectables;
 
 	for (auto const& projectile : projectiles) {
 		if (projectile->isInRender(scrollX) == false || projectile->vx == 0) {
@@ -290,22 +283,6 @@ void GameLayer::update() {
 			}
 		}
 	}
-	//Colision item
-	for (auto const& item : listItems) {
-		if (player->isOverlap(item)) {
-			bool iInList = std::find(deleteRecolectables.begin(),
-				deleteRecolectables.end(),
-				item) != deleteRecolectables.end();
-
-			if (!iInList) {
-				deleteRecolectables.push_back(item);
-				items++;
-				textItems->content = to_string(items);
-
-			}
-		}
-
-	}
 
 
 	for (auto const& delEnemy : deleteEnemies) {
@@ -326,10 +303,6 @@ void GameLayer::update() {
 	}
 	deleteProjectilesEnemies.clear();
 
-	for (auto const& delItem : deleteRecolectables) {
-		listItems.remove(delItem);
-	}
-	deleteRecolectables.clear();
 
 	cout << "update GameLayer" << endl;
 }
@@ -364,10 +337,6 @@ void GameLayer::draw() {
 		projectileEnemie->draw(scrollX);
 	}
 
-	for (auto const& item : listItems) {
-		item->draw(scrollX);
-	}
-
 	cup->draw(scrollX);
 	player->draw(scrollX);
 	for (auto const& enemy : enemies) {
@@ -376,8 +345,7 @@ void GameLayer::draw() {
 
 	backgroundPoints->draw();
 	textPoints->draw();
-	backgroundItems->draw();
-	textItems->draw();
+
 	// HUD
 	if (game->input == game->inputMouse) {
 		buttonJump->draw(); // NO TIENEN SCROLL, POSICION FIJA
@@ -429,14 +397,6 @@ void GameLayer::loadMapObject(char character, int x, int y)
 		// modificación para empezar a contar desde el suelo.
 		cup->y = cup->y - cup->height / 2;
 		space->addDynamicActor(cup); // Realmente no hace falta
-		break;
-	}
-	case 'I': {
-		Recolectable* item = new Recolectable(x, y, game);
-		// modificación para empezar a contar desde el suelo.
-		item->y = item->y - item->height / 2;
-		listItems.push_back(item);
-		space->addDynamicActor(item); // Realmente no hace falta
 		break;
 	}
 	case 'G': {

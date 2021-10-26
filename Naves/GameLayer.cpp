@@ -27,6 +27,7 @@ void GameLayer::init() {
 	audioBackground->play();
 
 	projectiles.clear(); // Vaciar por si reiniciamos el juego
+	projectilesEnemies.clear();
 
 	enemies.clear(); // Vaciar por si reiniciamos el juego
 	loadMap("res/" + to_string(game->currentLevel) + ".txt");
@@ -77,10 +78,10 @@ void GameLayer::processControls() {
 	}
 	else {
 		player->moveX(0);
-	}	
+	}
 
 	// Eje Y
-	if (controlMoveY < 0) 
+	if (controlMoveY < 0)
 		player->jump();
 
 }
@@ -174,23 +175,23 @@ void GameLayer::update() {
 
 	space->update();
 	background->update();
-	/* Generar enemigos
 
-	newEnemyTime--;
-	if (newEnemyTime <= 0) {
-		int rX = (rand() % (600 - 500)) + 1 + 500;
-		int rY = (rand() % (300 - 60)) + 1 + 60;
-		enemies.push_back(new Enemy(rX, rY, game));
-		newEnemyTime = 110 - killedEnemies * 2;
-	}
-	*/
 	player->update();
 	for (auto const& enemy : enemies) {
 		enemy->update();
+		ProjectileEnemy* newProjectile = enemy->shoot();
+		if (newProjectile != NULL) {
+			space->addDynamicActor(newProjectile);
+			projectilesEnemies.push_back(newProjectile);
+		}
 	}
 
 	for (auto const& projectile : projectiles) {
 		projectile->update();
+	}
+
+	for (auto const& projectileEnemie : projectilesEnemies) {
+		projectileEnemie->update();
 	}
 
 	// Colisiones
@@ -208,6 +209,7 @@ void GameLayer::update() {
 
 	list<Enemy*> deleteEnemies;
 	list<Projectile*> deleteProjectiles;
+	list<ProjectileEnemy*> deleteProjectilesEnemies;
 
 	for (auto const& projectile : projectiles) {
 		if (projectile->isInRender(scrollX) == false || projectile->vx == 0) {
@@ -220,6 +222,35 @@ void GameLayer::update() {
 				deleteProjectiles.push_back(projectile);
 			}
 		}
+	}
+
+	for (auto const& projectileEnemie : projectilesEnemies) {
+		if (projectileEnemie->isInRender(scrollX) == false || projectileEnemie->vx == 0) {
+			bool pInList = std::find(deleteProjectilesEnemies.begin(),
+				deleteProjectilesEnemies.end(),
+				projectileEnemie) != deleteProjectilesEnemies.end();
+
+			if (!pInList) {
+				deleteProjectilesEnemies.push_back(projectileEnemie);
+			}
+		}
+		else if (player->isOverlap(projectileEnemie)) {
+			bool pInList = std::find(deleteProjectilesEnemies.begin(),
+				deleteProjectilesEnemies.end(),
+				projectileEnemie) != deleteProjectilesEnemies.end();
+
+			if (!pInList) {
+				deleteProjectilesEnemies.push_back(projectileEnemie);
+
+				player->loseLife();
+				if (player->lifes <= 0) {
+					init();
+					return;
+				}
+
+			}
+		}
+
 	}
 
 	for (auto const& enemy : enemies) {
@@ -267,6 +298,11 @@ void GameLayer::update() {
 	}
 	deleteProjectiles.clear();
 
+	for (auto const& delProjectileEnemie : deleteProjectilesEnemies) {
+		projectilesEnemies.remove(delProjectileEnemie);
+	}
+	deleteProjectilesEnemies.clear();
+
 
 	cout << "update GameLayer" << endl;
 }
@@ -297,6 +333,10 @@ void GameLayer::draw() {
 	for (auto const& projectile : projectiles) {
 		projectile->draw(scrollX);
 	}
+	for (auto const& projectileEnemie : projectilesEnemies) {
+		projectileEnemie->draw(scrollX);
+	}
+
 	cup->draw(scrollX);
 	player->draw(scrollX);
 	for (auto const& enemy : enemies) {
@@ -359,8 +399,16 @@ void GameLayer::loadMapObject(char character, int x, int y)
 		space->addDynamicActor(cup); // Realmente no hace falta
 		break;
 	}
-	case 'E': {
-		Enemy* enemy = new Enemy(x, y, game);
+	case 'G': {
+		Enemy* enemy = new GreyEnemy(x, y, game);
+		// modificación para empezar a contar desde el suelo.
+		enemy->y = enemy->y - enemy->height / 2;
+		enemies.push_back(enemy);
+		space->addDynamicActor(enemy);
+		break;
+	}
+	case 'B': {
+		Enemy* enemy = new BlueEnemy(x, y, game);
 		// modificación para empezar a contar desde el suelo.
 		enemy->y = enemy->y - enemy->height / 2;
 		enemies.push_back(enemy);

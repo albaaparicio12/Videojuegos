@@ -10,6 +10,9 @@
 #include "Tile.h" 
 #include "Space.h" 
 #include "Pad.h"
+#include "GreyEnemy.h"
+#include "BlueEnemy.h"
+#include "ProjectileEnemy.h"
 
 #include <fstream> // Leer ficheros
 #include <sstream> // Leer líneas / String
@@ -37,6 +40,7 @@ public:
 
 	list<Enemy*> enemies;
 	list<Projectile*> projectiles;
+	list<ProjectileEnemy*> projectilesEnemies;
 
 	Actor* backgroundPoints;
 	Text* textPoints;

@@ -13,6 +13,7 @@
 #include "GreyEnemy.h"
 #include "BlueEnemy.h"
 #include "ProjectileEnemy.h"
+#include "Recolectable.h"
 
 #include <fstream> // Leer ficheros
 #include <sstream> // Leer líneas / String
@@ -45,7 +46,10 @@ public:
 	Actor* backgroundPoints;
 	Text* textPoints;
 	int points;
-
+	Actor* backgroundItems;
+	Text* textItems;
+	int items;
+	list<Recolectable*> listItems;
 	Audio* audioBackground;
 
 	void loadMap(string name);
@@ -61,6 +65,7 @@ public:
 
 	Space* space;
 	Tile* cup; // Elemento de final de nivel
+
 
 	// Elementos de interfaz
 	Actor* buttonJump;

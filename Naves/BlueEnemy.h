@@ -7,5 +7,6 @@ public:
     BlueEnemy(float x, float y, Game* game);
     ProjectileEnemy* shoot() override;
     void update() override;
+    int timeJump = 0;
 };
 

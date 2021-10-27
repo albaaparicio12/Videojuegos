@@ -78,7 +78,6 @@ void Space::updateMoveRight(Actor* dynamicAct) {
     }
 }
 
-
 void Space::updateMoveLeft(Actor* dynamicAct) {
     if (dynamicAct->vx < 0) {
         int possibleMovement = dynamicAct->vx;

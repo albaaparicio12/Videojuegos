@@ -85,7 +85,7 @@
       <Filter>Archivos de origen\Actores</Filter>
     </ClCompile>
     <ClCompile Include="Recolectable.cpp">
-      <Filter>Archivos de origen</Filter>
+      <Filter>Archivos de origen\Actores</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -144,7 +144,7 @@
       <Filter>Archivos de encabezado\Actores</Filter>
     </ClInclude>
     <ClInclude Include="Recolectable.h">
-      <Filter>Archivos de encabezado</Filter>
+      <Filter>Archivos de encabezado\Actores</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

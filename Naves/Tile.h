@@ -4,6 +4,7 @@
 class Tile : public Actor
 {
 public:
-	Tile(string filename, int x, int y, Game* game);
+	Tile(string filename,bool isDestruible, int x, int y, Game* game);
+	bool isDestruible;
 };
 

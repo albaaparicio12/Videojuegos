@@ -199,7 +199,6 @@ void GameLayer::update() {
 	for (auto const& item : listItems) {
 		item->update();
 	}
-
 	// Colisiones
 	for (auto const& enemy : enemies) {
 		if (player->isOverlap(enemy)) {
@@ -217,16 +216,21 @@ void GameLayer::update() {
 	list<Projectile*> deleteProjectiles;
 	list<ProjectileEnemy*> deleteProjectilesEnemies;
 	list<Recolectable*> deleteRecolectables;
+	list<Tile*> deleteTiles;
 
 	for (auto const& projectile : projectiles) {
-		if (projectile->isInRender(scrollX) == false || projectile->vx == 0) {
+		for (auto const& tile : tiles) {			
+			if (projectile->isInRender(scrollX) == false || projectile->vx == 0) {
+				if (projectile->isOverlap(tile) && tile->isDestruible) {
+					deleteTiles.push_back(tile);
+				}
+				bool pInList = std::find(deleteProjectiles.begin(),
+					deleteProjectiles.end(),
+					projectile) != deleteProjectiles.end();
 
-			bool pInList = std::find(deleteProjectiles.begin(),
-				deleteProjectiles.end(),
-				projectile) != deleteProjectiles.end();
-
-			if (!pInList) {
-				deleteProjectiles.push_back(projectile);
+				if (!pInList) {
+					deleteProjectiles.push_back(projectile);
+				}
 			}
 		}
 	}
@@ -331,6 +335,12 @@ void GameLayer::update() {
 	}
 	deleteRecolectables.clear();
 
+	for (auto const& delTile : deleteTiles) {
+		tiles.remove(delTile);
+		space->removeStaticActor(delTile);
+	}
+	deleteTiles.clear();
+
 	cout << "update GameLayer" << endl;
 }
 
@@ -425,7 +435,7 @@ void GameLayer::loadMapObject(char character, int x, int y)
 	//enemies.push_back(new Enemy(300, 50, game));
 	switch (character) {
 	case 'C': {
-		cup = new Tile("res/copa.png", x, y, game);
+		cup = new Tile("res/copa.png",false, x, y, game);
 		// modificación para empezar a contar desde el suelo.
 		cup->y = cup->y - cup->height / 2;
 		space->addDynamicActor(cup); // Realmente no hace falta
@@ -463,7 +473,15 @@ void GameLayer::loadMapObject(char character, int x, int y)
 		break;
 	}
 	case '#': {
-		Tile* tile = new Tile("res/bloque_tierra.png", x, y, game);
+		Tile* tile = new Tile("res/bloque_tierra.png",false, x, y, game);
+		// modificación para empezar a contar desde el suelo.
+		tile->y = tile->y - tile->height / 2;
+		tiles.push_back(tile);
+		space->addStaticActor(tile);
+		break;
+	}
+	case 'U': {
+		Tile* tile = new Tile("res/bloque_metal.png", true, x, y, game);
 		// modificación para empezar a contar desde el suelo.
 		tile->y = tile->y - tile->height / 2;
 		tiles.push_back(tile);

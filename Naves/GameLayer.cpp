@@ -496,6 +496,14 @@ void GameLayer::loadMapObject(char character, int x, int y)
 		space->addStaticActor(tile);
 		break;
 	}
+	case 'Y': {
+		Tile* tile = new Tile("res/bloque_salto.png", true, x, y, game);
+		// modificación para empezar a contar desde el suelo.
+		tile->y = tile->y - tile->height / 2;
+		tiles.push_back(tile);
+		space->addStaticActor(tile);
+		break;
+	}
 	}
 }
 

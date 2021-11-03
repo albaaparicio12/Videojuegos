@@ -30,9 +30,9 @@ ProjectileEnemy* BlueEnemy::shoot() {
 }
 
 void BlueEnemy::update() {
-	Enemy::update();
 	if (shootTime > 0) {
 		shootTime--;
 	}
+	Enemy::update();
 	
 }

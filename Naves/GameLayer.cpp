@@ -465,6 +465,14 @@ void GameLayer::loadMapObject(char character, int x, int y)
 		space->addDynamicActor(enemy);
 		break;
 	}
+	case 'J': {
+		Enemy* enemy = new EnemyJumping(x, y, game);
+		// modificación para empezar a contar desde el suelo.
+		enemy->y = enemy->y - enemy->height / 2;
+		enemies.push_back(enemy);
+		space->addDynamicActor(enemy);
+		break;
+	}
 	case '1': {
 		player = new Player(x, y, game);
 		// modificación para empezar a contar desde el suelo.

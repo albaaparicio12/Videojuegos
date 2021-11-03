@@ -158,6 +158,7 @@
     <ClCompile Include="Background.cpp" />
     <ClCompile Include="BlueEnemy.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="EnemyJumping.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameLayer.cpp" />
     <ClCompile Include="GreyEnemy.cpp" />
@@ -180,6 +181,7 @@
     <ClInclude Include="Background.h" />
     <ClInclude Include="BlueEnemy.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="EnemyJumping.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameLayer.h" />
     <ClInclude Include="GreyEnemy.h" />

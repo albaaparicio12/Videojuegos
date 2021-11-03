@@ -33,12 +33,6 @@ void BlueEnemy::update() {
 	if (shootTime > 0) {
 		shootTime--;
 	}
-	if (timeJump == 0) {
-		vy = -8;
-		timeJump = 50;
-	}
-	else
-		timeJump--;
 	Enemy::update();
 	
 }

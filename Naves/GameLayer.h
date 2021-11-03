@@ -14,6 +14,7 @@
 #include "BlueEnemy.h"
 #include "ProjectileEnemy.h"
 #include "Recolectable.h"
+#include "EnemyJumping.h"
 
 #include <fstream> // Leer ficheros
 #include <sstream> // Leer líneas / String

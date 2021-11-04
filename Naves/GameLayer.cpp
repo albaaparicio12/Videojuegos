@@ -218,12 +218,18 @@ void GameLayer::update() {
 	list<Recolectable*> deleteRecolectables;
 	list<Tile*> deleteTiles;
 
+	for (auto const& tile : tiles) {
+		if (player->isOverlap(tile) && tile->isJump) {
+			player->bigJump();
+		}
+	}
+
 	for (auto const& projectile : projectiles) {
-		for (auto const& tile : tiles) {			
+		for (auto const& tile : tiles) {				
 			if (projectile->isInRender(scrollX) == false || projectile->vx == 0) {
 				if (projectile->isOverlap(tile) && tile->isDestruible) {
 					deleteTiles.push_back(tile);
-				}
+				}				
 				bool pInList = std::find(deleteProjectiles.begin(),
 					deleteProjectiles.end(),
 					projectile) != deleteProjectiles.end();
@@ -435,7 +441,7 @@ void GameLayer::loadMapObject(char character, int x, int y)
 	//enemies.push_back(new Enemy(300, 50, game));
 	switch (character) {
 	case 'C': {
-		cup = new Tile("res/copa.png",false, x, y, game);
+		cup = new Tile("res/copa.png",false,false, x, y, game);
 		// modificación para empezar a contar desde el suelo.
 		cup->y = cup->y - cup->height / 2;
 		space->addDynamicActor(cup); // Realmente no hace falta
@@ -481,7 +487,7 @@ void GameLayer::loadMapObject(char character, int x, int y)
 		break;
 	}
 	case '#': {
-		Tile* tile = new Tile("res/bloque_tierra.png",false, x, y, game);
+		Tile* tile = new Tile("res/bloque_tierra.png",false,false, x, y, game);
 		// modificación para empezar a contar desde el suelo.
 		tile->y = tile->y - tile->height / 2;
 		tiles.push_back(tile);
@@ -489,7 +495,7 @@ void GameLayer::loadMapObject(char character, int x, int y)
 		break;
 	}
 	case 'U': {
-		Tile* tile = new Tile("res/bloque_metal.png", true, x, y, game);
+		Tile* tile = new Tile("res/bloque_metal.png", true,false, x, y, game);
 		// modificación para empezar a contar desde el suelo.
 		tile->y = tile->y - tile->height / 2;
 		tiles.push_back(tile);
@@ -497,7 +503,7 @@ void GameLayer::loadMapObject(char character, int x, int y)
 		break;
 	}
 	case 'Y': {
-		Tile* tile = new Tile("res/bloque_salto.png", true, x, y, game);
+		Tile* tile = new Tile("res/bloque_salto.jpg", false,true, x, y, game);
 		// modificación para empezar a contar desde el suelo.
 		tile->y = tile->y - tile->height / 2;
 		tiles.push_back(tile);

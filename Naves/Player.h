@@ -31,6 +31,7 @@ public:
 	States state = States::IDLE;
 	
 	void jump();
+	void bigJump();
 	bool isOnAir;
 	void loseLife();
 	int lifes = 3;

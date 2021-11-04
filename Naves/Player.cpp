@@ -139,6 +139,13 @@ void Player::jump() {
 	}
 }
 
+void Player::bigJump() {
+	if (!isOnAir) {
+		vy = -21;
+		isOnAir = true;
+	}
+}
+
 void Player::loseLife() {
 	if (invulnerableTime <= 0) {
 		if (lifes > 0) {
